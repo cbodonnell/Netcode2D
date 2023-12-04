@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Cinemachine;
+using System;
 
 public class ServerPlayerMovement : NetworkBehaviour
 {
@@ -9,6 +11,11 @@ public class ServerPlayerMovement : NetworkBehaviour
     private float playerSpeed = 5f;
     [SerializeField]
     private Transform playerTransform;
+
+    [SerializeField]
+    private CinemachineVirtualCamera vc;
+    [SerializeField]
+    private AudioListener listener;
 
     public CharacterController cc;
     private MyPlayerInput playerInput;
@@ -21,6 +28,19 @@ public class ServerPlayerMovement : NetworkBehaviour
     {
         playerInput = new MyPlayerInput();
         playerInput.Enable();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            listener.enabled = true;
+            vc.Priority = 1;
+        }
+        else
+        {
+            vc.Priority = 0;
+        }
     }
 
     // Update is called once per frame
@@ -44,8 +64,11 @@ public class ServerPlayerMovement : NetworkBehaviour
 
     private void Move(Vector2 input)
     {
-        Vector3 move = new Vector3(input.x, 0, input.y);
-        cc.Move(move * playerSpeed * Time.deltaTime);
+        Vector3 move = new Vector3(input.x, input.y, 0);
+        Vector2 v = move * playerSpeed;
+        Debug.Log("Moving with velocity: " + v);
+        Vector3 motion = v * Time.deltaTime;
+        cc.Move(motion);
     }
 
     [ServerRpc]
