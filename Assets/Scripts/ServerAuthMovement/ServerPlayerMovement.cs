@@ -13,6 +13,8 @@ public class ServerPlayerMovement : NetworkBehaviour
     public CharacterController cc;
     private MyPlayerInput playerInput;
 
+    private Vector2 currentInput;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,15 +26,19 @@ public class ServerPlayerMovement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector2 input = playerInput.Player.Movement.ReadValue<Vector2>();
-
         if (IsServer && IsLocalPlayer)
         {
-            Move(input);
+            currentInput = playerInput.Player.Movement.ReadValue<Vector2>();
         }
         else if (IsClient && IsLocalPlayer)
         {
-            MoveServerRpc(input);
+            Vector2 newInput = playerInput.Player.Movement.ReadValue<Vector2>();
+            MoveServerRpc(newInput);
+        }
+
+        if (IsServer)
+        {
+            Move(currentInput);
         }
     }
 
@@ -43,8 +49,8 @@ public class ServerPlayerMovement : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void MoveServerRpc(Vector2 input)
+    private void MoveServerRpc(Vector2 newInput)
     {
-        Move(input);
+        currentInput = newInput;
     }
 }
