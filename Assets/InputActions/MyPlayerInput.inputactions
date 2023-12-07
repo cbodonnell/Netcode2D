@@ -1,5 +1,5 @@
 {
-    "name": "PlayerInput",
+    "name": "MyPlayerInput",
     "maps": [
         {
             "name": "Player",
@@ -10,6 +10,15 @@
                     "type": "PassThrough",
                     "id": "44e7f797-73c7-47ce-bc25-5aa9fa8d28a9",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "f975a0c8-3544-45d9-8e01-41cb90c1ba8e",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -70,6 +79,17 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "30df15cc-6760-47b4-a09d-25f8e68dfc4e",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

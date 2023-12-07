@@ -66,7 +66,6 @@ public class ServerPlayerMovement : NetworkBehaviour
     {
         Vector3 move = new Vector3(input.x, input.y, 0);
         Vector2 v = move * playerSpeed;
-        Debug.Log("Moving with velocity: " + v);
         Vector3 motion = v * Time.deltaTime;
         cc.Move(motion);
     }
